@@ -1,5 +1,86 @@
 # Changelog
 
+## [4.2.0] - 2020-08-21
+### Added
+- Check ignoredVersion when resolving driver version (issue #529)
+- Include configuration key (wdm.resolutionCachePath) to specify a path for resolution cache
+
+### Fixed
+- Fix filtering based on ignored versions
+- Use Locale.ROOT in String case conversion (fix issue #521, which happens in Turkey locale)
+- Fix support of WebDriverManager Docker container to resolve drivers
+
+### Changed
+- Change default cache path location to ~/.cache/selenium
+- Store drivers in cache using the same folder structure: {cachePath}/driverName/os+arch/driverVersion
+- Rename getBinaryPath() method to getDownloadedDriverPath() in WebDriverManager API
+- Rename getDownloadedVersion() method to getDownloadedDriverVersion() in WebDriverManager API
+- Rename clearCache() method to clearDriverCache() in WebDriverManager API
+- Rename configuration key wdm.binaryPath to wdm.browserPath
+- Build URL from pattern when no candidate is found after the filtering process
+
+
+## [4.1.0] - 2020-07-14
+### Added
+- New method in WebDriverManager API: ttlBrowsers(int) -> TTL to store browser versions in resolution cache (issue #483)
+- New method in WebDriverManager API: avoidReadReleaseFromRepository() -> to avoid reading driver version from repository
+- Build download URL from pattern when it is no available in chromedriver and msedgedriver repository
+
+### Fixed
+- Add namespace context for Saxon compatibility (issue #503)
+- Change default headers in HTTP client (fix support for msedgedriver)
+
+### Changed
+- Store value in resolution cache only when TTL (for drivers and browsers) is upper 0
+- Parse BitBucket API to download PhantomJS drivers
+
+### Removed
+- Remove WebDriverManager survey link from log traces
+
+
+## [4.0.0] - 2020-05-03
+### Added
+- Full support for Edge (Chromium-based) using https://msedgedriver.azureedge.net/
+- Include resolution cache (former preferences) stored as properties (resolution.properties) in the cache folder
+- Read Chrome version from registry when wmic does not discover the version (issue #394)
+- Add Safari support for DriverManagerType
+- Look for wmic.exe program also in wbem folder (issue #438)
+- Improve driver version resolution algorithm
+- Include label "alpha" for detecting beta versions
+- Include WebDriverManager as Java agent using premain entry point
+- Release WebDriverManager as Docker container (for CLI and Server) in Docker Hub
+- Include WebDriverManager survey link in INFO traces: http://tiny.cc/wdm-survey
+- New method in WebDriverManager API: browserVersion() -> to specify major browser version
+- New method in WebDriverManager API: avoidFallback() -> to avoid the fallback mechanism if some exception happens
+- New method in WebDriverManager API: getDriverManagerType() -> to get manager type (enum)
+
+### Fixed
+- Support Windows short names in cachePath
+- Fix proxy credentials never set from env vars
+- Bump Apache HttpClient to version 5.0 (fix issue #461)
+- Remove hard coded values on Travis SonarCloud addon (issue #471)
+
+### Changed
+- Use LATEST_RELEASE_x from chromedriver and msedgedriver repository (x = given version)
+- Use latest from cache as primary fallback mechanism
+- Support for different locations of Opera in Windows (also in LOCALAPPDATA env)
+- Refactor main and test logic in different packages
+- Use streams for filtering URLs and cache
+- Bump all dependencies (main and test) to latest stable versions
+- Changed method in WebDriverManager API: clearPreferences() -> to path of cache, old clearResolutionCache()
+- Changed method in WebDriverManager API: cachePath() -> to path of cache, old targetPath()
+- Changed method in WebDriverManager API: driverVersion() -> to specify driver version, old version()
+- Changed method in WebDriverManager API: avoidBrowserDetection() -> to avoid the detection of the browser version, old avoidAutoVersion()
+- Changed method in WebDriverManager API: getDriverVersions() -> to get the list of available driver versions, old getVersions()
+- Logo
+
+### Removed
+- Support for old versions of Edge (pre Chromium-based)
+- Use of Java preferences (now: resolution.properties)
+- Use of mirror in fallback mechanism
+- Methods of WebDriverManager API: targetPath(), version(), avoidAutoVersion(), forceCache() (cache is used always)
+
+
 ## [3.8.1] - 2020-01-19
 ### Fixed
 - Fix Chromium support (issue #429, PR #430)
